@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>구독챙김 — 결제 하루 전에 알려드려요</title>
+<title>구독챙김 — 결제 전에 미리 알려드려요</title>
+<link rel="icon" type="image/png" href="icons/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -28,6 +29,8 @@
     font-family:var(--font-body);
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
+    word-break:keep-all;
+    overflow-wrap:break-word;
   }
   a{ color:inherit; text-decoration:none; }
   .wrap{ max-width:1080px; margin:0 auto; padding:0 24px; }
@@ -41,13 +44,18 @@
   }
   nav .wrap{ display:flex; align-items:center; justify-content:space-between; height:64px; }
   .logo{ display:flex; align-items:center; gap:8px; font-family:var(--font-display); font-weight:700; font-size:18px; }
-  .logo-mark{ width:26px; height:26px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .logo-mark{ width:26px; height:26px; border-radius:8px; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:14px; overflow:hidden; }
+  .logo-mark img, .notif-icon img, .banner-icon img, .app-icon.subscare img{ width:100%; height:100%; display:block; object-fit:cover; }
+  .notif-icon, .banner-icon, .app-icon.subscare{ overflow:hidden; }
   .nav-cta{
     background:var(--accent); color:#fff; font-weight:600; font-size:14px;
     padding:9px 18px; border-radius:100px;
     transition:opacity .15s;
   }
   .nav-cta:hover{ opacity:0.85; }
+  .nav-links{ display:flex; gap:22px; }
+  .nav-links a{ color:var(--text-secondary); font-size:14px; font-weight:500; transition:color .15s; }
+  .nav-links a:hover{ color:#fff; }
 
   /* Hero */
   .hero{ padding:88px 0 60px; }
@@ -137,6 +145,10 @@
     white-space:nowrap; animation:hintPulse 2s infinite; pointer-events:none;
   }
   @keyframes hintPulse{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+  .phone-app{
+    position:absolute; inset:0; z-index:20; width:100%; height:100%;
+    border:none; background:#000; border-radius:42px;
+  }
   .app-frame{
     position:absolute; inset:0; z-index:20; width:100%; height:100%;
     border:none; background:#000; border-radius:42px;
@@ -166,8 +178,48 @@
   .problem-card{
     background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px;
   }
-  .problem-card .amount{ font-family:var(--font-display); font-weight:700; font-size:26px; color:#fff; margin-bottom:6px; }
-  .problem-card .label{ color:var(--text-secondary); font-size:14px; }
+  .problem-card .p-top{ display:flex; align-items:center; gap:13px; margin-bottom:16px; }
+  .problem-card .p-icon{
+    width:46px; height:46px; border-radius:11px; overflow:hidden; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 1px 3px rgba(0,0,0,0.4);
+  }
+  .problem-card .p-icon img{ width:100%; height:100%; object-fit:cover; }
+  .problem-card .p-icon.icloud{ background:linear-gradient(180deg,#ffffff,#eef1f6); }
+  .problem-card .p-icon.icloud svg{ width:29px; height:29px; }
+  .problem-card .amount{ font-family:var(--font-display); font-weight:700; font-size:18px; color:#fff; }
+  .problem-card .p-price{ color:var(--text-secondary); font-size:13.5px; font-weight:600; margin-top:2px; }
+  .problem-card .label{ color:var(--text-secondary); font-size:14px; word-break:keep-all; }
+
+  /* 서버 없이 작동하는 원리 */
+  .no-server{
+    margin-top:36px; background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:22px 26px;
+  }
+  .no-server h3{ font-size:16px; font-weight:700; margin-bottom:12px; }
+  .no-server ul{ list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .no-server li{ color:var(--text-secondary); font-size:14px; line-height:1.7; word-break:keep-all; }
+  .no-server li b{ color:#fff; font-weight:600; }
+
+  /* 근거 (한국소비자원) */
+  .evidence{
+    margin-top:28px; background:var(--surface); border:1px solid var(--border);
+    border-left:3px solid var(--accent); border-radius:14px; padding:22px 26px;
+    display:flex; gap:26px; align-items:center; flex-wrap:wrap;
+  }
+  .evidence .ev-stat{
+    font-family:var(--font-body);
+    font-size:34px; font-weight:800; color:#fff; letter-spacing:-0.01em;
+    line-height:1.25; flex-shrink:0; white-space:nowrap;
+  }
+  .evidence .ev-stat span{
+    display:block; font-size:12px; color:var(--accent-green);
+    font-family:var(--font-body); font-weight:600; margin-top:4px;
+  }
+  .evidence p{ flex:1; min-width:260px; color:var(--text-secondary); font-size:14px; line-height:1.75; word-break:keep-all; }
+  .evidence p b{ color:#fff; font-weight:600; }
+  .evidence a{ color:var(--accent); font-size:13px; font-weight:600; flex-shrink:0; }
+  .evidence a:hover{ text-decoration:underline; }
 
   /* Steps */
   .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
@@ -409,9 +461,13 @@
   footer p{ color:var(--text-secondary); font-size:13px; }
 
   @media (max-width:860px){
+    /* 좁은 화면에서는 문장 단위 강제 줄바꿈 해제 (자연 줄바꿈에 맡김) */
+    .section-head br, .hero p.sub br, .evidence p br,
+    .feature-card p br, .install-option p br, .step p br{ display:none; }
     .hero .wrap{ grid-template-columns:1fr; }
     .phone-stage{ order:-1; }
     h1{ font-size:36px; }
+    .nav-links{ display:none; }
     .problem-grid, .steps, .install-grid, .feature-grid, .price-grid{ grid-template-columns:1fr; }
     .install{ padding:28px; }
   }
@@ -529,6 +585,12 @@
 <nav>
   <div class="wrap">
     <div class="logo"><span class="logo-mark">🔔</span>구독챙김</div>
+    <div class="nav-links">
+      <a href="#problem">문제</a>
+      <a href="#roadmap">기능</a>
+      <a href="#screens">미리보기</a>
+      <a href="#pricing">가격</a>
+    </div>
     <a href="#install" class="nav-cta">받아보기</a>
   </div>
 </nav>
@@ -537,8 +599,8 @@
   <div class="wrap">
     <div>
       <div class="eyebrow"><span class="dot"></span>iOS 전용 · 개인용 MVP</div>
-      <h1>깜빡한 구독료,<br>결제 <span>하루 전</span>에<br>알려드려요.</h1>
-      <p class="sub"> 한 번만 입력하면, 매달 같은 날짜를 기억해서 하루 전에 잠금화면으로 알려드립니다. 서버도, 로그인도 없이 내 기기 안에서만 조용히 작동해요.</p>
+      <h1>깜빡한 구독료,<br>결제 전에 <span>미리</span><br>알려드려요.</h1>
+      <p class="sub">한 번만 입력하면 결제일을 기억했다가, 원하는 시점(기본 하루 전)에 잠금화면으로 알려드립니다.<br>서버도, 로그인도 없이 내 기기 안에서만 조용히 작동해요.</p>
       <div class="cta-row">
         <a href="app.html" class="btn-primary">앱처럼 체험해보기 →</a>
         <a href="#install" class="btn-secondary">설치 방법 보기</a>
@@ -562,14 +624,14 @@
             <div class="notif-app">구독챙김</div>
             <div class="notif-time">오전 9:00</div>
           </div>
-          <div class="notif-title">ChatGpt 29,000원 결제 하루 전</div>
-          <div class="notif-body">내일 결제될 예정입니다</div>
+          <div class="notif-title">ChatGpt 결제 하루 전</div>
+          <div class="notif-body">내일 29,000원이 결제될 예정입니다</div>
         </div>
         <div class="launch-hint">👆 탭하면 앱이 실행돼요</div>
       </div>
-      <a class="btn-primary" id="open-big" href="app.html" target="_blank" rel="noopener" style="display:none;">지금 이 앱, 크게 보기 ↗</a>
+      <a class="btn-primary" id="open-big" href="app.html" style="display:none;">지금 이 앱, 크게 보기 →</a>
       <button class="demo-reset" id="demo-reset">↺ 잠금화면으로 돌아가기</button>
-      <a class="open-full" id="open-full" href="app.html" target="_blank" rel="noopener">전체 화면으로 크게 보기 ↗</a>
+      <a class="open-full" id="open-full" href="app.html">전체 화면으로 크게 보기 →</a>
     </div>
   </div>
 </section>
@@ -577,22 +639,81 @@
 <section id="problem">
   <div class="wrap">
     <div class="section-head">
-      <div class="section-label">이런 적 있으신가요</div>
+      <div class="section-label">01 · 이런 적 있으신가요</div>
       <h2>매달 조용히 빠져나가는 구독료</h2>
       <p class="desc">한 번 등록해두면 잊어버리기 쉬운 구독 서비스들, 결제일이 지나서야 알아차리는 경우가 많아요.</p>
     </div>
     <div class="problem-grid">
       <div class="problem-card">
-        <div class="amount">ChatGpt</div>
-        <div class="label">결제되고 나서야 이번 달도 나갔구나 싶은</div>
+        <div class="p-top">
+          <div class="p-icon"><img src="icons/chatgpt.png" alt="ChatGPT"></div>
+          <div>
+            <div class="amount">ChatGpt</div>
+            <div class="p-price">월 29,000원 · 연 348,000원</div>
+          </div>
+        </div>
+        <div class="label">결제되고 나서야 '이번 달도 나갔구나' 싶은</div>
       </div>
       <div class="problem-card">
-        <div class="amount">밀리의 서재</div>
+        <div class="p-top">
+          <div class="p-icon"><img src="icons/millie.png" alt="밀리의 서재"></div>
+          <div>
+            <div class="amount">밀리의 서재</div>
+            <div class="p-price">월 9,900원 · 연 118,800원</div>
+          </div>
+        </div>
         <div class="label">쓰는지 안 쓰는지도 모른 채 유지되는</div>
       </div>
       <div class="problem-card">
-        <div class="amount">아이폰 클라우드</div>
+        <div class="p-top">
+          <div class="p-icon" style="background:#3b9cff;font-size:23px;">☁️</div>
+          <div>
+            <div class="amount">아이폰 클라우드</div>
+            <div class="p-price">월 1,100원 · 연 13,200원</div>
+          </div>
+        </div>
         <div class="label">언제 결제됐는지조차 기억나지 않는</div>
+      </div>
+    </div>
+    <div class="evidence">
+      <div class="ev-stat">151건<span>3년 새 약 3배 ↑</span></div>
+      <p>"온라인 무료 체험 후 정기결제 전환" 피해구제 신청이 2022년 26건에서 2024년 71건으로 늘었어요.<br>피해 유형 1위는 <b>'자동전환 고지 미흡'(34.0%)</b>, 2위는 <b>'무료기간 내 해지 제한·방해'(32.1%)</b>.<br>전액을 돌려받은 경우는 <b>41.7%</b>에 그쳤습니다 — 사후 구제가 어려우니, 결제 전에 아는 것만이 답이에요.</p>
+      <a href="https://www.kca.go.kr/home/sub.do?menukey=4005&mode=view&no=1003905182" target="_blank" rel="noopener">한국소비자원 피해예방주의보 (2025.8.) ↗</a>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">02 · 핵심 기능</div>
+      <h2>열어야 보이는 앱이 아니라,<br>찾아오는 앱</h2>
+      <p class="desc">구독챙김은 돈이 나가기 직전, '결정하는 순간'을 파고듭니다.<br>네 가지 모두 아래 미리보기와 데모에서 직접 눌러볼 수 있어요.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="f-emoji">👆</div>
+        <h3>알림에서 바로 결정</h3>
+        <p>잠금화면 알림의 버튼 하나로 '계속 쓸지, 해지할지'가 끝나요.<br>해지를 고르면 해당 서비스의 해지 페이지로 바로 연결됩니다.</p>
+        <span class="tag-live">데모에서 동작</span>
+      </div>
+      <div class="feature-card">
+        <div class="f-emoji">📈</div>
+        <h3>결제 확인</h3>
+        <p>결제 다음날 "금액이 맞았나요?"라고 물어봐요.<br>금액이 달라졌다면 월·연 인상액을 바로 계산해드려요.<br>조용한 가격 인상을 놓치지 않는 가장 가벼운 방법이에요.</p>
+        <span class="tag-live">데모에서 동작</span>
+      </div>
+      <div class="feature-card">
+        <div class="f-emoji">⏳</div>
+        <h3>무료체험 파수꾼</h3>
+        <p>무료체험 종료 전날 잠금화면으로 알려드려요.<br>지금 해지해도 종료일까지 쓸 수 있다는 것까지 함께요.<br>무료체험 피해 1위가 '유료 전환 고지 미흡'(소비자원 34%)이거든요.</p>
+        <span class="tag-live">데모에서 동작</span>
+      </div>
+      <div class="feature-card">
+        <div class="f-emoji">⏱️</div>
+        <h3>구독 ROI 분석</h3>
+        <p>iOS 스크린타임과 연동해 시간당 구독 비용을 계산해요.<br>"이번 달 1시간 보고 9,900원" — 잘 안 쓰는 구독은 갱신 전에 물어봐요.<br>웹 서비스는 흉내낼 수 없는 기능이에요.</p>
+        <span class="tag-live">데모에서 동작</span>
       </div>
     </div>
   </div>
@@ -601,7 +722,7 @@
 <section id="how">
   <div class="wrap">
     <div class="section-head">
-      <div class="section-label">작동 방식</div>
+      <div class="section-label">03 · 작동 방식</div>
       <h2>세 단계면 충분해요</h2>
       <p class="desc">복잡한 설정 없이, 결제일 하나만 입력하면 나머지는 자동으로 처리돼요.</p>
     </div>
@@ -614,13 +735,21 @@
       <div class="step">
         <div class="step-num">02</div>
         <h3>자동 계산</h3>
-        <p>매달 같은 날짜에 결제된다고 가정하고, 다음 결제일을 자동으로 계산해요.</p>
+        <p>첫 결제일만 알면 다음 결제일을 자동으로 계산해요.<br>31일처럼 없는 날짜는 말일로 알아서 맞춰드려요.</p>
       </div>
       <div class="step">
         <div class="step-num">03</div>
-        <h3>하루 전 알림</h3>
-        <p>결제 하루 전, 잠금화면으로 조용히 알려드려요. 매달 반복돼요.</p>
+        <h3>결제 전 알림</h3>
+        <p>원하는 시점(1·3·7일 전)에 잠금화면으로 조용히 알려드려요.<br>매달 반복돼요.</p>
       </div>
+    </div>
+    <div class="no-server">
+      <h3>서버도, 로그인도 없이 어떻게 되냐면요</h3>
+      <ul>
+        <li><b>데이터</b> — 다루는 정보가 구독 이름·금액·날짜 3가지뿐이라, 서버가 아니라 내 폰에 저장돼요.</li>
+        <li><b>알림</b> — 서버가 쏘는 푸시가 아니라 iOS '로컬 알림'이에요. 한 번 예약해두면 폰이 알람시계처럼 스스로 울려요.</li>
+        <li><b>계정</b> — 로그인 대신 결제·구매 기록을 Apple ID가 관리해요. 그래서 가입할 것도, 유출될 것도 없어요.</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -628,16 +757,16 @@
 <section id="screens">
   <div class="wrap">
     <div class="section-head">
-      <div class="section-label">미리보기 · 직접 만져보세요</div>
+      <div class="section-label">04 · 미리보기 · 직접 만져보세요</div>
       <h2>실제로 동작하는 화면이에요</h2>
-      <p class="desc">세 번째 폰에서 구독을 직접 등록해보세요. 홈 화면 뱃지가 올라가고, 알림 배너가 방금 등록한 구독으로 다시 내려옵니다.</p>
+      <p class="desc">첫 번째 폰은 '크게 보기'와 완전히 같은 실제 앱이에요.<br>추가 탭에서 구독을 등록하면 가운데 폰의 뱃지가 올라가고, 마지막 폰에 알림 배너가 내려옵니다.</p>
     </div>
     <div class="mockup-row">
 
-      <!-- Screen 1: 알림 배너 -->
-      <div class="mockup-col">
-        <div class="mockup-label"><span class="num">1</span>알림에서 바로 결정</div>
-        <div class="mockup-desc">계속 쓸지, 해지할지 알림 버튼으로 그 자리에서 끝나요 · 버튼을 눌러보세요, 폰을 클릭하면 다시 재생</div>
+      <!-- 시연 3단계: 알림에서 바로 결정 -->
+      <div class="mockup-col" style="order:3;">
+        <div class="mockup-label"><span class="num">3</span>알림에서 바로 결정</div>
+        <div class="mockup-desc">결제 전날 오는 알림이에요. 알림 속 두 버튼을 직접 눌러보세요 — 폰의 빈 곳을 클릭하면 알림이 다시 내려옵니다</div>
         <div class="phone" id="phone-banner">
           <div class="status-bar">
             <span>9:41</span>
@@ -662,8 +791,8 @@
               <span class="banner-app">구독챙김</span>
               <span class="banner-time">지금</span>
             </div>
-            <div class="banner-title" id="banner-title">ChatGpt 29,000원 결제 하루 전</div>
-            <div class="banner-text" id="banner-text">내일 결제될 예정입니다</div>
+            <div class="banner-title" id="banner-title">ChatGpt 결제 하루 전</div>
+            <div class="banner-text" id="banner-text">내일 29,000원이 결제될 예정입니다</div>
             <div class="banner-actions" id="banner-actions">
               <button type="button" id="ba-keep">계속 쓸게요</button>
               <button type="button" id="ba-cancel" class="danger">해지 알아보기</button>
@@ -672,10 +801,10 @@
         </div>
       </div>
 
-      <!-- Screen 2: 홈 화면 뱃지 -->
-      <div class="mockup-col">
+      <!-- 시연 2단계: 홈 화면 뱃지 -->
+      <div class="mockup-col" style="order:2;">
         <div class="mockup-label"><span class="num">2</span>홈 화면 뱃지</div>
-        <div class="mockup-desc">앱 아이콘에 등록된 구독 수만큼 올라가는 뱃지 · 지금은 5개</div>
+        <div class="mockup-desc">앱 아이콘 뱃지가 등록된 구독 수를 보여줘요 — 첫 번째 폰에서 등록하면 숫자가 실시간으로 올라갑니다</div>
         <div class="phone">
           <div class="status-bar">
             <span>9:41</span>
@@ -727,50 +856,12 @@
         </div>
       </div>
 
-      <!-- Screen 3: 구독 체크리스트 -->
-      <div class="mockup-col">
-        <div class="mockup-label"><span class="num">3</span>구독 체크리스트</div>
-        <div class="mockup-desc">앱 이름·구독료·시작일을 등록하고 다음 결제일을 확인하는 화면</div>
+      <!-- 시연 1단계: 실제 앱 (라이브) -->
+      <div class="mockup-col" style="order:1;">
+        <div class="mockup-label"><span class="num">1</span>실제 앱 그대로</div>
+        <div class="mockup-desc">'크게 보기'와 완전히 같은 앱이에요 — 추가 탭에서 직접 등록해보세요</div>
         <div class="phone">
-          <div class="status-bar">
-            <span>9:41</span>
-            <div class="sb-right">
-              <svg class="sb-i"><use href="#ic-signal"/></svg>
-              <svg class="sb-i"><use href="#ic-wifi"/></svg>
-              <svg class="sb-i sb-batt"><use href="#ic-battery"/></svg>
-            </div>
-          </div>
-          <div class="app-screen-bg"></div>
-          <div class="phone-scroll">
-          <div class="app-screen-head">
-            <h2>내 구독 관리</h2>
-          </div>
-
-          <div class="group-label">새 구독 추가</div>
-          <div class="ios-group">
-            <div class="ios-row">
-              <span class="row-label">앱 이름</span>
-              <input type="text" id="in-name" placeholder="예: 넷플릭스">
-            </div>
-            <div class="ios-row">
-              <span class="row-label">구독료</span>
-              <input type="text" id="in-price" placeholder="예: 9,900원" inputmode="numeric">
-            </div>
-            <div class="ios-row">
-              <span class="row-label">구독 시작일</span>
-              <input type="text" id="in-date" placeholder="2026. 7. 9.">
-            </div>
-          </div>
-          <button class="add-btn" type="button" id="add-sub">추가</button>
-
-          <div class="group-label" id="sub-count">등록된 구독 · 5</div>
-          <div class="ios-group" id="sub-list">
-            <div class="sub-row total">
-              <span class="total-label">월 합계</span>
-              <span class="total-amt" id="total-amt">54,900원</span>
-            </div>
-          </div>
-          </div>
+          <iframe class="phone-app" src="app.html" title="구독챙김 앱 라이브 데모"></iframe>
         </div>
       </div>
 
@@ -778,48 +869,12 @@
   </div>
 </section>
 
-<section id="roadmap">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="section-label">가계부 앱과 다른 점</div>
-      <h2>열어야 보이는 앱이 아니라,<br>찾아오는 앱</h2>
-      <p class="desc">기능을 늘리는 대신, 돈이 나가기 직전 '결정하는 순간'을 파고듭니다. 세 가지 모두 위 데모에서 직접 눌러볼 수 있어요.</p>
-    </div>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="f-emoji">👆</div>
-        <h3>알림에서 바로 결정</h3>
-        <p>잠금화면 알림의 버튼 하나로 '계속 쓸지, 해지할지'가 끝나요. 해지를 고르면 해당 서비스의 해지 페이지로 바로 연결됩니다.</p>
-        <span class="tag-live">데모에서 동작</span>
-      </div>
-      <div class="feature-card">
-        <div class="f-emoji">📈</div>
-        <h3>가격 인상 감지</h3>
-        <p>결제 다음날 "금액이 맞았나요?" 확인 한 번으로 조용한 가격 인상을 잡아내요. 서버 없이, 내 확인만으로요.</p>
-        <span class="tag-live">데모에서 동작</span>
-      </div>
-      <div class="feature-card">
-        <div class="f-emoji">⏳</div>
-        <h3>무료체험 파수꾼</h3>
-        <p>무료체험 종료 전날 잠금화면으로 알려드려요. 지금 해지해도 종료일까지 쓸 수 있다는 것까지 함께요.</p>
-        <span class="tag-live">데모에서 동작</span>
-      </div>
-      <div class="feature-card">
-        <div class="f-emoji">⏱️</div>
-        <h3>구독 ROI 분석</h3>
-        <p>iOS 스크린타임과 연동해 "이번 달 1시간 보고 9,900원"처럼 시간당 비용을 계산해요. 잘 안 쓰는 구독은 갱신 전에 물어봐요 — 웹 서비스는 흉내낼 수 없는 기능이에요.</p>
-        <span class="tag-live">데모에서 동작</span>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section id="pricing">
   <div class="wrap">
     <div class="section-head">
-      <div class="section-label">가격</div>
+      <div class="section-label">05 · 가격</div>
       <h2>구독을 줄여주는 앱이라서,<br>구독료를 받지 않아요</h2>
-      <p class="desc">서버가 없으니 매달 나가는 비용도 없어요. 그래서 한 번 결제로 끝낼 수 있습니다.</p>
+      <p class="desc">앱들이 월 구독료를 받는 건 서버 운영비가 매달 나가기 때문이에요.<br>구독챙김은 데이터가 내 기기에만 저장돼서 그 비용이 0원이에요.<br>매달 받을 이유가 없으니, 한 번 결제로 끝낼 수 있습니다.</p>
     </div>
     <div class="price-grid">
       <div class="price-card">
@@ -829,7 +884,7 @@
         <ul>
           <li>구독 5개까지 등록</li>
           <li>결제·무료체험 알림 무제한</li>
-          <li>가격 인상 감지 포함</li>
+          <li>결제 확인 · 인상액 계산 포함</li>
           <li>온디바이스 저장 · 로그인 없음</li>
         </ul>
       </div>
@@ -850,16 +905,16 @@
 <section id="install">
   <div class="wrap">
     <div class="section-head">
-      <div class="section-label">받는 방법</div>
+      <div class="section-label">06 · 받는 방법</div>
       <h2>지금 바로 설치하기</h2>
-      <p class="desc">App Store에는 없는 개인용 앱이에요. 아래 두 가지 방법 중 하나로 설치할 수 있어요.</p>
+      <p class="desc">App Store에는 없는 개인용 앱이에요.<br>아래 두 가지 방법 중 하나로 설치할 수 있어요.</p>
     </div>
     <div class="install">
       <div class="install-grid">
         <div class="install-option">
           <span class="tag">가장 간단함</span>
           <h3>개인 기기 직접 설치</h3>
-          <p>Xcode로 내 아이폰에 바로 설치하는 방식이에요. 무료지만 7일마다 재설치가 필요해요.</p>
+          <p>Xcode로 내 아이폰에 바로 설치하는 방식이에요.<br>무료지만 7일마다 재설치가 필요해요.</p>
           <a href="#" class="link-btn">설치 가이드 보기 →</a>
         </div>
         <div class="install-option">
@@ -882,73 +937,44 @@
 
 <script>
 (function(){
-  var list = document.getElementById('sub-list');
   var badge = document.getElementById('home-badge');
-  var countLabel = document.getElementById('sub-count');
-  var totalEl = document.getElementById('total-amt');
   var banner = document.getElementById('live-banner');
   var bannerTitle = document.getElementById('banner-title');
-  var inName = document.getElementById('in-name');
-  var inPrice = document.getElementById('in-price');
-  var inDate = document.getElementById('in-date');
-  var addBtn = document.getElementById('add-sub');
 
   var fmt = function(n){ return n.toLocaleString('ko-KR') + '원'; };
 
-  // 히어로 데모(app.html)와 동일한 샘플 데이터 — '어제 결제된' 유튜브와 '체험 D-3' 디즈니+ 포함
-  var seedNow = new Date();
-  var seedYstDay = new Date(seedNow.getFullYear(), seedNow.getMonth(), seedNow.getDate() - 1).getDate();
-  var subs = [
-    { name:'ChatGpt',        price:29000, day:15, iconHTML:'<div class="sub-icon"><img src="icons/chatgpt.png" alt="ChatGPT"></div>' },
-    { name:'밀리의 서재',     price:9900,  day:3,  iconHTML:'<div class="sub-icon"><img src="icons/millie.png" alt="밀리의 서재"></div>' },
-    { name:'아이폰 클라우드',  price:1100,  day:21, iconHTML:'<div class="sub-icon icloud"><svg><use href="#ic-icloud"/></svg></div>' },
-    { name:'유튜브 프리미엄',  price:14900, day:seedYstDay, iconHTML:'<div class="sub-icon"><img src="icons/youtube.png" alt="유튜브 프리미엄"></div>' },
-    { name:'디즈니+',         price:9900,  day:0, trialD:3, iconHTML:'<div class="sub-icon"><img src="icons/disney.png" alt="디즈니+"></div>' }
-  ];
-
-  function render(){
-    list.querySelectorAll('.sub-row:not(.total)').forEach(function(r){ r.remove(); });
-    var totalRow = list.querySelector('.sub-row.total');
-    var total = 0;
-    subs.forEach(function(s, i){
-      if(!s.trialD) total += s.price; // 무료체험은 아직 안 나가는 돈
-      var priceLine = s.trialD ? '체험 후 월 ' + fmt(s.price) : '월 ' + fmt(s.price);
-      var nextLine = s.trialD
-        ? 'D-' + s.trialD + '<span class="d-label">체험</span>'
-        : s.day + '일<span class="d-label">매월</span>';
-      var row = document.createElement('div');
-      row.className = 'sub-row';
-      row.innerHTML =
-        '<div class="sub-row-left">' +
-          '<div class="check-dot"><svg><use href="#ic-check"/></svg></div>' +
-          s.iconHTML +
-          '<div class="sub-name-wrap">' +
-            '<div class="sub-name"></div>' +
-            '<div class="sub-price">' + priceLine + '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div style="display:flex;align-items:center;gap:8px;">' +
-          '<div class="sub-next">' + nextLine + '</div>' +
-          '<button class="sub-del" type="button" aria-label="삭제">✕</button>' +
-        '</div>';
-      row.querySelector('.sub-name').textContent = s.name;
-      row.querySelector('.sub-del').addEventListener('click', function(){
-        subs.splice(i, 1);
-        render();
-      });
-      list.insertBefore(row, totalRow);
-    });
-    totalEl.textContent = fmt(total);
-    badge.textContent = subs.length;
-    countLabel.textContent = '등록된 구독 · ' + subs.length;
+  /* ----- 폰 1(실제 앱)과 동기화: 앱에서 등록하면 뱃지가 오르고 배너가 다시 내려온다 ----- */
+  var LS_SUBS = 'subcare.subs.v2';
+  var lastCount = null;
+  function readSubs(){
+    try{
+      var s = JSON.parse(localStorage.getItem(LS_SUBS));
+      return Array.isArray(s) ? s : null;
+    }catch(e){ return null; }
   }
+  function syncFromApp(initial){
+    var subs = readSubs();
+    var n = subs ? subs.length : 5;
+    badge.textContent = n;
+    if(!initial && lastCount !== null && n > lastCount && subs && subs.length){
+      var s = subs[subs.length - 1];
+      bannerRealTitle = s.name + ' 결제 하루 전';
+      bannerRealText = '내일 ' + fmt(s.price) + '이 결제될 예정입니다';
+      replayBanner();
+    }
+    lastCount = n;
+  }
+  window.addEventListener('storage', function(e){
+    if(e.key === LS_SUBS) syncFromApp(false);
+  });
 
   var bannerText = document.getElementById('banner-text');
   var bannerActions = document.getElementById('banner-actions');
   var bannerRealTitle = bannerTitle.textContent;
+  var bannerRealText = bannerText.textContent;
   function replayBanner(){
     bannerTitle.textContent = bannerRealTitle;
-    bannerText.textContent = '내일 결제될 예정입니다';
+    bannerText.textContent = bannerRealText;
     bannerActions.style.visibility = 'visible';
     banner.style.animation = 'none';
     void banner.offsetWidth;
@@ -969,43 +995,9 @@
     window.open('https://chatgpt.com/#settings', '_blank', 'noopener');
   });
 
-  function addSub(){
-    var name = inName.value.trim();
-    var price = parseInt(inPrice.value.replace(/[^0-9]/g,''), 10);
-    if(!name || !price){
-      addBtn.textContent = '이름과 구독료를 입력해주세요';
-      setTimeout(function(){ addBtn.textContent = '추가'; }, 1400);
-      return;
-    }
-    var nums = inDate.value.match(/\d+/g);
-    var day = nums ? parseInt(nums[nums.length-1], 10) : new Date().getDate();
-    if(!(day >= 1 && day <= 31)) day = new Date().getDate();
-
-    subs.push({
-      name: name,
-      price: price,
-      day: day,
-      iconHTML: '<div class="sub-icon custom">' + name.charAt(0).toUpperCase() + '</div>'
-    });
-    render();
-
-    var sc = document.querySelector('.phone-scroll');
-    sc.scrollTo({ top: sc.scrollHeight, behavior: 'smooth' });
-
-    bannerRealTitle = name + ' ' + fmt(price) + ' 결제 하루 전';
-    replayBanner();
-
-    inName.value = ''; inPrice.value = ''; inDate.value = '';
-    inName.focus();
-  }
-
-  addBtn.addEventListener('click', addSub);
-  [inName, inPrice, inDate].forEach(function(el){
-    el.addEventListener('keydown', function(e){ if(e.key === 'Enter') addSub(); });
-  });
   document.getElementById('phone-banner').addEventListener('click', replayBanner);
 
-  render();
+  syncFromApp(true);
 
   /* ----- 히어로 폰: 탭하면 앱 실행 ----- */
   var heroPhone = document.getElementById('hero-phone');
@@ -1013,6 +1005,14 @@
   var openBig = document.getElementById('open-big');
   var openFull = document.getElementById('open-full');
   var appFrame = null;
+
+  // 크게 보기: 새 탭이 아니라 현재 탭에서 URL만 바꿔 이동
+  [openBig, openFull].forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      window.location.href = 'app.html';
+    });
+  });
 
   function launchApp(){
     if(heroPhone.classList.contains('launched')) return;
@@ -1042,6 +1042,23 @@
       if(appFrame){ appFrame.remove(); appFrame = null; }
     }, 400);
   });
+
+  /* ----- 모든 폰의 시계를 실제 시간으로 ----- */
+  function tickClocks(){
+    var now = new Date();
+    var t = now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
+    var days = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+    document.querySelectorAll('.status-bar > span').forEach(function(el){ el.textContent = t; });
+    var pt = document.querySelector('.phone-time');
+    if(pt) pt.textContent = t;
+    var pd = document.querySelector('.phone-date');
+    if(pd) pd.textContent = (now.getMonth() + 1) + '월 ' + now.getDate() + '일 ' + days[now.getDay()];
+    var calDay = document.querySelector('.calendar .cal-day');
+    var calNum = document.querySelector('.calendar .cal-num');
+    if(calDay) calDay.textContent = days[now.getDay()];
+    if(calNum) calNum.textContent = now.getDate();
+  }
+  tickClocks(); setInterval(tickClocks, 15000);
 
   // 데스크톱에서는 히어로 CTA도 새 탭 대신 폰 안에서 앱을 실행
   var heroCta = document.querySelector('.btn-primary');

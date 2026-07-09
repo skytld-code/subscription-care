@@ -1,0 +1,32 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3ba0ff"/>
+      <stop offset="1" stop-color="#0058cc"/>
+    </linearGradient>
+    <linearGradient id="bell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dcecff"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="0.3" cy="0.12" r="0.9">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- iOS 스타일 라운드 사각형 배경 -->
+  <rect width="1024" height="1024" rx="230" fill="url(#bg)"/>
+  <rect width="1024" height="1024" rx="230" fill="url(#shine)"/>
+
+  <!-- 종 (결제 전 알림) -->
+  <g transform="translate(512 512) scale(26) translate(-12 -12.4)">
+    <path fill="url(#bell)" d="M12 2.6c-.62 0-1.12.5-1.12 1.12v.66C7.9 5 5.8 7.6 5.8 10.7v4.4l-1.74 2c-.55.63-.1 1.62.74 1.62h14.4c.84 0 1.29-.99.74-1.62l-1.74-2v-4.4c0-3.1-2.1-5.7-5.08-6.32v-.66c0-.62-.5-1.12-1.12-1.12z"/>
+    <path fill="url(#bell)" d="M12 22.2c1.3 0 2.4-.9 2.75-2.1h-5.5c.35 1.2 1.45 2.1 2.75 2.1z"/>
+  </g>
+
+  <!-- 알림 뱃지 (하루 전) -->
+  <circle cx="716" cy="316" r="104" fill="#ff453a" stroke="#0a6cf0" stroke-width="26"/>
+  <text x="716" y="322" text-anchor="middle" dominant-baseline="middle"
+        font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif"
+        font-size="112" font-weight="700" fill="#ffffff">D-1</text>
+</svg>
