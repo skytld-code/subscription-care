@@ -107,24 +107,52 @@
   }
   .phone-date{ text-align:center; color:rgba(255,255,255,0.85); font-size:14px; font-weight:600; margin-top:6px; }
   .notif-card{
-    margin:206px 10px 0; background:rgba(30,30,32,0.92); backdrop-filter:blur(20px) saturate(1.8);
-    border-radius:20px; padding:12px 14px;
+    position:absolute; left:10px; right:10px; bottom:64px;
+    background:rgba(28,28,30,0.94); backdrop-filter:blur(24px) saturate(1.8);
+    border-radius:26px; padding:18px 18px 16px;
     border:1px solid rgba(255,255,255,0.08);
-    box-shadow:0 12px 28px rgba(0,0,0,0.4);
-    opacity:0; transform:translateY(-14px);
+    box-shadow:0 16px 36px rgba(0,0,0,0.5);
+    opacity:0; transform:translateY(24px);
     animation:dropIn .6s cubic-bezier(.2,.8,.2,1) 0.9s forwards;
   }
   @keyframes dropIn{ to{ opacity:1; transform:translateY(0); } }
-  .notif-top{ display:flex; align-items:center; gap:6px; margin-bottom:6px; }
+  .notif-top{ display:flex; align-items:center; gap:8px; margin-bottom:10px; }
   .notif-icon{
-    width:18px; height:18px; border-radius:5.5px; background:linear-gradient(160deg,#3aa0ff,#0a84ff);
+    width:30px; height:30px; border-radius:8px; background:var(--accent);
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    font-size:16px; line-height:1;
   }
-  .notif-icon svg{ width:11px; height:11px; color:#fff; }
-  .notif-app{ color:rgba(255,255,255,0.55); font-size:13px; font-weight:600; flex:1; }
-  .notif-time{ color:rgba(255,255,255,0.4); font-size:12px; }
-  .notif-title{ color:#fff; font-size:15px; font-weight:600; margin-bottom:1px; letter-spacing:-0.01em; }
-  .notif-body{ color:rgba(255,255,255,0.75); font-size:14px; }
+  .notif-app{ color:rgba(255,255,255,0.6); font-size:14px; font-weight:600; flex:1; }
+  .notif-time{ color:rgba(255,255,255,0.4); font-size:13px; }
+  .notif-title{ color:#fff; font-size:18px; font-weight:700; margin-bottom:3px; letter-spacing:-0.015em; line-height:1.3; }
+  .notif-body{ color:rgba(255,255,255,0.78); font-size:15px; }
+
+  /* Hero live demo (tap phone → app launches) */
+  .phone-stage{ flex-direction:column; align-items:center; gap:14px; }
+  #hero-phone{ cursor:pointer; }
+  .launch-hint{
+    position:absolute; bottom:20px; left:50%; transform:translateX(-50%); z-index:8;
+    background:rgba(255,255,255,0.14); backdrop-filter:blur(12px);
+    color:#fff; font-size:12px; font-weight:600; padding:8px 16px; border-radius:100px;
+    white-space:nowrap; animation:hintPulse 2s infinite; pointer-events:none;
+  }
+  @keyframes hintPulse{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+  .app-frame{
+    position:absolute; inset:0; z-index:20; width:100%; height:100%;
+    border:none; background:#000; border-radius:42px;
+    opacity:0; transform:scale(0.35); transform-origin:50% 60%;
+    transition:opacity .35s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+    pointer-events:none;
+  }
+  .phone.launched .app-frame{ opacity:1; transform:scale(1); pointer-events:auto; }
+  .phone.launched .launch-hint{ display:none; }
+  .demo-reset{
+    background:none; border:1px solid var(--border); color:var(--text-secondary);
+    font-family:var(--font-body); font-size:12.5px; font-weight:600;
+    padding:7px 14px; border-radius:100px; cursor:pointer; display:none;
+    transition:color .15s, border-color .15s;
+  }
+  .demo-reset:hover{ color:#fff; border-color:#5a5a5e; }
 
   /* Section shared */
   section{ padding:80px 0; border-top:1px solid var(--border); }
@@ -152,6 +180,220 @@
   .step h3{ font-size:18px; font-weight:700; margin-bottom:8px; }
   .step p{ color:var(--text-secondary); font-size:14.5px; line-height:1.6; }
 
+  /* Screens (phone mockups) */
+  .mockup-row{ display:flex; gap:40px; justify-content:center; flex-wrap:wrap; }
+  .mockup-col{ display:flex; flex-direction:column; align-items:center; gap:20px; width:280px; }
+  .mockup-label{
+    display:flex; align-items:center; gap:8px;
+    color:var(--accent); font-size:13px; font-weight:700; letter-spacing:0.02em; text-align:center;
+  }
+  .mockup-label .num{
+    width:22px; height:22px; border-radius:7px; border:1px solid var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-size:12px;
+  }
+  .mockup-desc{ color:var(--text-secondary); font-size:12.5px; text-align:center; margin-top:-10px; max-width:260px; }
+  .mockup-row .phone{ flex-shrink:0; font-family:var(--font-ios); }
+
+  /* Screen 1: top banner notification */
+  .app-bg{ position:absolute; inset:0; filter:blur(7px); transform:scale(1.08); background:#000; }
+  .app-bg .bg-topbar{ height:78px; background:var(--surface); border-bottom:1px solid var(--border); }
+  .app-bg .bg-content{ padding:16px 14px; display:flex; flex-direction:column; gap:12px; }
+  .app-bg .bg-card{ height:64px; background:var(--surface); border:1px solid var(--border); border-radius:16px; }
+  .app-bg .bg-card.short{ height:40px; width:60%; background:var(--surface-2); }
+  .top-banner{
+    position:absolute; top:50px; left:8px; right:8px; z-index:7;
+    background:rgba(28,28,30,0.92); backdrop-filter:blur(20px) saturate(1.8);
+    border-radius:26px; padding:11px 14px 13px;
+    box-shadow:0 14px 32px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.06) inset;
+    display:flex; flex-direction:column;
+    animation:bannerDrop .7s cubic-bezier(.2,.8,.2,1) 0.35s forwards;
+    opacity:0; transform:translateY(-70px);
+  }
+  @keyframes bannerDrop{ to{ opacity:1; transform:translateY(0); } }
+  .banner-top{ display:flex; align-items:center; gap:6px; margin-bottom:4px; }
+  .banner-icon{
+    width:20px; height:20px; border-radius:6px; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    font-size:11px; line-height:1;
+  }
+  .banner-app{ color:rgba(255,255,255,0.55); font-size:13px; font-weight:600; }
+  .banner-time{ color:rgba(255,255,255,0.4); font-size:12px; margin-left:auto; }
+  .banner-title{ color:#fff; font-size:15px; font-weight:600; margin-bottom:1px; letter-spacing:-0.01em; }
+  .banner-text{ color:rgba(255,255,255,0.75); font-size:14px; line-height:1.35; }
+
+  /* Screen 2: home screen with badge */
+  .home-wallpaper{
+    position:absolute; inset:0; z-index:0;
+    background:radial-gradient(circle at 28% 16%, #24365f 0%, #0a1122 45%, #000 85%);
+  }
+  .home-grid{
+    position:relative; z-index:2;
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:18px 12px; padding:58px 15px 0;
+  }
+  .app-cell{ display:flex; flex-direction:column; align-items:center; gap:5px; }
+  .icon-wrap{ position:relative; }
+  .app-icon{
+    width:52px; height:52px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+    box-shadow:0 1px 3px rgba(0,0,0,0.4);
+  }
+  .app-icon svg{ width:29px; height:29px; color:#fff; }
+  .app-icon svg.full{ position:absolute; inset:0; width:100%; height:100%; }
+  .app-icon.bg-white{ background:linear-gradient(180deg,#ffffff,#ececf1); }
+  .app-icon.bg-green{ background:linear-gradient(180deg,#67e084,#20b944); }
+  .app-icon.bg-green2{ background:linear-gradient(180deg,#5bf777,#0dc42f); }
+  .app-icon.bg-blue{ background:linear-gradient(180deg,#54b8ff,#0a6cff); }
+  .app-icon.bg-dark{ background:linear-gradient(180deg,#3a3a3c,#101012); }
+  .app-icon.bg-camera{ background:linear-gradient(180deg,#eef0f2,#c9ccd1); }
+  .app-icon.bg-gray{ background:linear-gradient(180deg,#b9bcc1,#7d8085); }
+  .app-icon.bg-music{ background:linear-gradient(180deg,#fd5e7e,#f2233e); }
+  .app-icon.bg-podcast{ background:linear-gradient(180deg,#b465f0,#7d2ae8); }
+  .app-icon.subscare{ background:var(--accent); font-size:26px; line-height:1; }
+  .app-icon.calendar{ background:#fff; flex-direction:column; }
+  .calendar .cal-day{ margin-top:8px; color:#ff3b30; font-size:8px; font-weight:700; line-height:1; }
+  .calendar .cal-num{ color:#1c1c1e; font-weight:400; font-size:26px; line-height:1.05; letter-spacing:-0.03em; }
+  .app-icon.notes{ background:#fff; flex-direction:column; align-items:stretch; }
+  .notes .notes-top{ height:14px; background:linear-gradient(180deg,#fbd54e,#f5c516); border-bottom:1px dotted rgba(0,0,0,0.25); }
+  .notes .notes-lines{ flex:1; display:flex; flex-direction:column; justify-content:center; gap:5px; padding:0 9px; }
+  .notes .notes-lines i{ display:block; height:2.2px; border-radius:2px; background:#c7c7cc; }
+  .notes .notes-lines i:last-child{ width:60%; }
+  .app-icon.reminders{ background:#fff; flex-direction:column; align-items:stretch; justify-content:center; gap:5.5px; padding:0 8px; }
+  .reminders .rem{ display:flex; align-items:center; gap:4px; }
+  .reminders .rd{ width:5.5px; height:5.5px; border-radius:50%; flex-shrink:0; }
+  .reminders .rb{ flex:1; height:2.2px; border-radius:2px; background:#d1d1d6; }
+  .badge{
+    position:absolute; top:-6px; right:-6px; min-width:20px; height:20px; padding:0 5px;
+    border-radius:50%; background:#ff3b30; color:#fff; font-size:12px; font-weight:600;
+    display:flex; align-items:center; justify-content:center; z-index:3;
+    box-shadow:0 1px 3px rgba(0,0,0,0.35);
+  }
+  .app-label{ font-size:10.5px; color:rgba(255,255,255,0.92); font-weight:500; text-shadow:0 1px 2px rgba(0,0,0,0.5); }
+  .dock{
+    position:absolute; left:12px; right:12px; bottom:14px; z-index:2;
+    height:76px; background:rgba(90,90,100,0.35); backdrop-filter:blur(20px);
+    border-radius:26px;
+    display:flex; align-items:center; justify-content:space-around; padding:0 10px;
+  }
+  .dock .app-icon{ width:50px; height:50px; }
+  .dock .app-icon svg{ width:28px; height:28px; }
+
+  /* Screen 3: subscription checklist */
+  .app-screen-bg{ position:absolute; inset:0; background:#000; z-index:0; }
+  .phone-scroll{
+    position:absolute; inset:0; z-index:2; overflow-y:auto; padding-bottom:24px;
+    scrollbar-width:none;
+  }
+  .phone-scroll::-webkit-scrollbar{ display:none; }
+  .app-screen-head{ position:relative; z-index:2; padding:52px 18px 10px; }
+  .app-screen-head h2{
+    font-family:var(--font-ios); font-weight:700; font-size:23px; letter-spacing:-0.02em; color:#fff; margin-bottom:0;
+  }
+  .group-label{
+    position:relative; z-index:2; margin:0 20px 6px; color:var(--text-secondary);
+    font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:0.03em;
+  }
+  .ios-group{
+    position:relative; z-index:2; margin:0 16px 12px; background:var(--surface);
+    border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.05);
+  }
+  .ios-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8.5px 14px; border-bottom:1px solid rgba(255,255,255,0.08); min-height:22px;
+  }
+  .ios-row:last-child{ border-bottom:none; }
+  .ios-row .row-label{ font-size:14.5px; color:#fff; }
+  .ios-row input{
+    background:transparent; border:none; outline:none; color:var(--text-secondary);
+    font-size:14.5px; text-align:right; font-family:var(--font-ios); width:130px;
+  }
+  .ios-row input::placeholder{ color:#636366; }
+  .add-btn{
+    position:relative; z-index:2; display:block; width:calc(100% - 32px); margin:0 16px 14px;
+    background:var(--accent); color:#fff; border:none; border-radius:12px; padding:10px;
+    font-family:var(--font-ios); font-weight:600; font-size:15px; cursor:pointer;
+  }
+  .sub-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 14px; border-bottom:1px solid rgba(255,255,255,0.08); gap:10px;
+  }
+  .sub-row:last-child{ border-bottom:none; }
+  .sub-row-left{ display:flex; align-items:center; gap:10px; min-width:0; }
+  .check-dot{
+    width:22px; height:22px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .check-dot svg{ width:22px; height:22px; }
+  .sub-icon{
+    width:30px; height:30px; border-radius:7px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    box-shadow:0 1px 2px rgba(0,0,0,0.3);
+  }
+  .sub-icon svg{ width:19px; height:19px; }
+  .sub-icon img{ width:100%; height:100%; object-fit:cover; }
+  .sub-icon.icloud{ background:linear-gradient(180deg,#ffffff,#eef1f6); }
+  .sub-name-wrap{ min-width:0; }
+  .sub-name{ font-size:14px; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sub-price{ font-size:11.5px; color:var(--text-secondary); line-height:1.3; }
+  .sub-next{ font-size:12.5px; color:var(--text-secondary); flex-shrink:0; text-align:right; }
+  .sub-next .d-label{ display:block; font-size:10px; color:#636366; }
+  .sub-row.total{ background:rgba(255,255,255,0.03); }
+  .total-label{ font-size:13px; font-weight:600; color:var(--text-secondary); }
+  .total-amt{ font-size:14.5px; font-weight:700; color:var(--accent-green); }
+  .sub-icon.custom{ background:var(--accent); color:#fff; font-weight:700; font-size:13px; font-family:var(--font-ios); }
+  .sub-del{
+    width:18px; height:18px; border-radius:50%; border:none; cursor:pointer;
+    background:rgba(255,255,255,0.12); color:var(--text-secondary);
+    font-size:11px; line-height:1; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    opacity:0; transition:opacity .15s;
+  }
+  .sub-row:hover .sub-del{ opacity:1; }
+  .sub-del:hover{ background:#ff3b30; color:#fff; }
+  .ios-row input{ pointer-events:auto; }
+  .add-btn:active{ opacity:0.7; }
+  #phone-banner{ cursor:pointer; }
+  .replay-hint{ color:#636366; font-size:11px; text-align:center; margin-top:-14px; }
+
+  /* 배너 액션 버튼 (알림에서 바로 결정) */
+  .banner-actions{ display:flex; gap:8px; margin-top:10px; }
+  .banner-actions button{
+    flex:1; border:none; cursor:pointer; padding:8px 0; border-radius:11px;
+    font-family:var(--font-ios); font-size:13px; font-weight:600;
+    background:rgba(255,255,255,0.14); color:#fff;
+    transition:background .15s;
+  }
+  .banner-actions button:hover{ background:rgba(255,255,255,0.24); }
+  .banner-actions button.danger{ color:#ff453a; }
+
+  .open-full{ color:#636366; font-size:12.5px; font-weight:600; transition:color .15s; }
+  .open-full:hover{ color:#fff; }
+
+  /* 차별화 기능 카드 */
+  .feature-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .feature-card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px; }
+  .feature-card .f-emoji{ font-size:26px; margin-bottom:14px; }
+  .feature-card h3{ font-size:17px; font-weight:700; margin-bottom:8px; }
+  .feature-card p{ color:var(--text-secondary); font-size:14px; line-height:1.6; }
+  .tag-live{
+    display:inline-block; font-size:11px; font-weight:700; color:var(--accent-green);
+    background:rgba(48,209,88,0.12); border:1px solid rgba(48,209,88,0.3);
+    padding:3px 9px; border-radius:100px; margin-top:14px;
+  }
+
+  /* 가격 */
+  .price-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:760px; }
+  .price-card{ background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:28px; }
+  .price-card.featured{ border-color:var(--accent); box-shadow:0 0 40px rgba(10,132,255,0.15); }
+  .price-card .p-name{ font-size:14px; font-weight:700; color:var(--text-secondary); margin-bottom:8px; }
+  .price-card .p-amt{ font-family:var(--font-display); font-size:34px; font-weight:700; margin-bottom:2px; }
+  .price-card .p-once{ color:var(--text-secondary); font-size:13px; margin-bottom:18px; }
+  .price-card ul{ list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .price-card li{ color:var(--text-secondary); font-size:14px; display:flex; gap:8px; align-items:baseline; }
+  .price-card li::before{ content:'✓'; color:var(--accent-green); font-weight:700; }
+  .price-card.featured li{ color:#fff; }
+
   /* Install */
   .install{ background:var(--surface); border-radius:24px; padding:48px; border:1px solid var(--border); }
   .install-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; }
@@ -170,7 +412,7 @@
     .hero .wrap{ grid-template-columns:1fr; }
     .phone-stage{ order:-1; }
     h1{ font-size:36px; }
-    .problem-grid, .steps, .install-grid{ grid-template-columns:1fr; }
+    .problem-grid, .steps, .install-grid, .feature-grid, .price-grid{ grid-template-columns:1fr; }
     .install{ padding:28px; }
   }
 </style>
@@ -178,10 +420,110 @@
 <body>
 
 <svg style="display:none">
+  <defs>
+    <linearGradient id="g-safari" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3ec6ff"/><stop offset="1" stop-color="#0a5cf0"/></linearGradient>
+    <linearGradient id="g-cloud" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fd3ff"/><stop offset="1" stop-color="#1f7bf4"/></linearGradient>
+  </defs>
   <symbol id="ic-signal" viewBox="0 0 18 12"><rect x="0" y="7" width="3" height="5" rx="0.8" fill="currentColor"/><rect x="4.5" y="5" width="3" height="7" rx="0.8" fill="currentColor"/><rect x="9" y="3" width="3" height="9" rx="0.8" fill="currentColor"/><rect x="13.5" y="0" width="3" height="12" rx="0.8" fill="currentColor"/></symbol>
   <symbol id="ic-wifi" viewBox="0 0 16 12"><path d="M8 10.6a1.1 1.1 0 100-2.2 1.1 1.1 0 000 2.2z" fill="currentColor"/><path d="M5.1 7.3a4.2 4.2 0 015.8 0" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M2.4 4.6a8 8 0 0111.2 0" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
   <symbol id="ic-battery" viewBox="0 0 25 12"><rect x="0.75" y="0.75" width="20.5" height="10.5" rx="2.8" stroke="currentColor" stroke-opacity="0.5" stroke-width="1" fill="none"/><rect x="2.4" y="2.4" width="17.2" height="7.2" rx="1.6" fill="currentColor"/><rect x="22.3" y="4" width="1.6" height="4" rx="0.8" fill="currentColor" opacity="0.5"/></symbol>
-  <symbol id="ic-bell" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a1.5 1.5 0 011.5 1.5v.6c3 .7 5 3.3 5 6.6v3.6l1.7 2.4c.4.6 0 1.3-.7 1.3H4.5c-.7 0-1.1-.7-.7-1.3L5.5 14.3v-3.6c0-3.3 2-5.9 5-6.6v-.6A1.5 1.5 0 0112 2z"/><path fill="currentColor" d="M9.5 19a2.5 2.5 0 005 0h-5z"/></symbol>
+
+  <symbol id="ic-phone" viewBox="0 0 24 24"><path fill="currentColor" d="M7.7 3.3c-.6-.6-1.6-.6-2.2 0L4.1 4.7c-1.7 1.7-1.9 4.4-.5 7.2 1.6 3.2 4.3 6.1 7.6 7.9 3 1.6 5.9 1.4 7.7-.4l1.1-1.1c.6-.6.6-1.6 0-2.2l-2.6-2.6c-.6-.6-1.6-.6-2.2 0l-.9.9c-1.6-1-3-2.4-4-4l.9-.9c.6-.6.6-1.6 0-2.2L7.7 3.3z"/></symbol>
+  <symbol id="ic-message" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3.5c-5 0-9 3.2-9 7.2 0 2.3 1.3 4.3 3.4 5.6-.2 1-.7 2.2-1.7 3 1.8-.1 3.3-.8 4.3-1.5.9.2 1.9.4 3 .4 5 0 9-3.2 9-7.2s-4-7.5-9-7.5z"/></symbol>
+  <symbol id="ic-safari" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10.2" fill="url(#g-safari)"/>
+    <g stroke="rgba(255,255,255,0.85)" stroke-width="0.8">
+      <line x1="12" y1="2.8" x2="12" y2="4.4"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(30 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(60 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(90 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(120 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(150 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(180 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(210 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(240 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(270 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(300 12 12)"/><line x1="12" y1="2.8" x2="12" y2="4.4" transform="rotate(330 12 12)"/>
+    </g>
+    <g transform="rotate(45 12 12)">
+      <polygon points="12,4.8 13.7,12 10.3,12" fill="#fff"/>
+      <polygon points="12,19.2 13.7,12 10.3,12" fill="#ff3b30"/>
+    </g>
+  </symbol>
+  <symbol id="ic-envelope" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12.5" rx="2.2" fill="#fff"/><path d="M3.6 6.8l8.4 6.2 8.4-6.2" stroke="#0a6cff" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-photos" viewBox="0 0 24 24">
+    <g opacity="0.85">
+      <ellipse cx="12" cy="7" rx="2.5" ry="4.4" fill="#ffcc00"/>
+      <ellipse cx="12" cy="7" rx="2.5" ry="4.4" fill="#ff9500" transform="rotate(45 12 12)"/>
+      <ellipse cx="12" cy="7" rx="2.5" ry="4.4" fill="#ff3b30" transform="rotate(90 12 12)"/>
+      <ellipse cx="12" cy="7" rx="2.5" ry="4.4" fill="#ff2d55" transform="rotate(135 12 12)"/>
+      <ellipse cx="12" cy="7" rx="2.5" ry="4.4" fill="#af52de" transform="rotate(180 12 12)"/>
+      <ellipse cx="12" cy="7" rx="2.5" ry="4.4" fill="#007aff" transform="rotate(225 12 12)"/>
+      <ellipse cx="12" cy="7" rx="2.5" ry="4.4" fill="#5ac8fa" transform="rotate(270 12 12)"/>
+      <ellipse cx="12" cy="7" rx="2.5" ry="4.4" fill="#34c759" transform="rotate(315 12 12)"/>
+    </g>
+  </symbol>
+  <symbol id="ic-camera" viewBox="0 0 24 24"><rect x="3" y="6.8" width="18" height="12" rx="2.6" fill="#3a3a3c"/><rect x="8.4" y="4.6" width="7.2" height="3.2" rx="1.3" fill="#3a3a3c"/><circle cx="12" cy="12.6" r="4" fill="#e8e8ed"/><circle cx="12" cy="12.6" r="2.7" fill="#3a3a3c"/></symbol>
+  <symbol id="ic-clock" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" fill="#fff"/>
+    <g stroke="#111" stroke-width="0.9">
+      <line x1="12" y1="2.9" x2="12" y2="4.7"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(30 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(60 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(90 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(120 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(150 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(180 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(210 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(240 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(270 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(300 12 12)"/><line x1="12" y1="2.9" x2="12" y2="4.7" transform="rotate(330 12 12)"/>
+    </g>
+    <line x1="12" y1="12" x2="8.9" y2="9.2" stroke="#111" stroke-width="1.6" stroke-linecap="round"/>
+    <line x1="12" y1="12" x2="13.6" y2="5.6" stroke="#111" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="12" y1="12" x2="14.8" y2="16.5" stroke="#ff9500" stroke-width="0.8" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="ic-weather" viewBox="0 0 24 24">
+    <circle cx="9.2" cy="8.6" r="3.4" fill="#ffd60a"/>
+    <g stroke="#ffd60a" stroke-width="1.2" stroke-linecap="round">
+      <line x1="9.2" y1="2.6" x2="9.2" y2="3.9"/><line x1="4.9" y1="4.3" x2="5.8" y2="5.2"/><line x1="3.2" y1="8.6" x2="4.5" y2="8.6"/><line x1="13.5" y1="4.3" x2="12.6" y2="5.2"/><line x1="15.2" y1="8.6" x2="13.9" y2="8.6"/>
+    </g>
+    <g fill="#fff">
+      <circle cx="11.5" cy="15.5" r="3.4"/>
+      <circle cx="16" cy="14.2" r="4.1"/>
+      <rect x="9" y="14.8" width="11" height="4.4" rx="2.2"/>
+    </g>
+  </symbol>
+  <symbol id="ic-maps" viewBox="0 0 60 60">
+    <rect width="60" height="60" fill="#cfe8b9"/>
+    <path d="M32 0 C29 16 42 25 60 22 L60 0 Z" fill="#a9dcf5"/>
+    <path d="M-2 46 C 18 40 27 22 34 -2" stroke="#f7d154" stroke-width="6" fill="none"/>
+    <path d="M-2 54 C 24 50 42 42 62 34" stroke="#ffffff" stroke-width="4" fill="none"/>
+    <circle cx="44" cy="44" r="4.5" fill="#fc3158"/>
+  </symbol>
+  <symbol id="ic-appstore" viewBox="0 0 24 24">
+    <g stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none">
+      <path d="M7 17.5 L12 7.5 L17 17.5"/>
+      <path d="M9.2 14.6 h5.6"/>
+      <path d="M12 7.5 l-1-1.8"/>
+    </g>
+  </symbol>
+  <symbol id="ic-gear" viewBox="0 0 24 24">
+    <g fill="currentColor">
+      <rect x="10.85" y="1.6" width="2.3" height="4.4" rx="1.1"/>
+      <rect x="10.85" y="1.6" width="2.3" height="4.4" rx="1.1" transform="rotate(45 12 12)"/>
+      <rect x="10.85" y="1.6" width="2.3" height="4.4" rx="1.1" transform="rotate(90 12 12)"/>
+      <rect x="10.85" y="1.6" width="2.3" height="4.4" rx="1.1" transform="rotate(135 12 12)"/>
+      <rect x="10.85" y="1.6" width="2.3" height="4.4" rx="1.1" transform="rotate(180 12 12)"/>
+      <rect x="10.85" y="1.6" width="2.3" height="4.4" rx="1.1" transform="rotate(225 12 12)"/>
+      <rect x="10.85" y="1.6" width="2.3" height="4.4" rx="1.1" transform="rotate(270 12 12)"/>
+      <rect x="10.85" y="1.6" width="2.3" height="4.4" rx="1.1" transform="rotate(315 12 12)"/>
+    </g>
+    <circle cx="12" cy="12" r="5.6" fill="none" stroke="currentColor" stroke-width="3.4"/>
+  </symbol>
+  <symbol id="ic-music" viewBox="0 0 24 24"><path fill="currentColor" d="M9 17.5a2.5 2.5 0 11-2.5-2.5c.4 0 .7.1 1 .2V6.8a1 1 0 01.8-1L17 4v9.7a2.5 2.5 0 11-2-2.4V8l-6 1.3v8.2z"/></symbol>
+  <symbol id="ic-podcast" viewBox="0 0 24 24">
+    <circle cx="12" cy="9.6" r="2.5" fill="#fff"/>
+    <path d="M12 13c-1.8 0-2.8 1.6-2.5 3.2l.5 2.7a2 2 0 004 0l.5-2.7c.3-1.6-.7-3.2-2.5-3.2z" fill="#fff"/>
+    <path d="M6.3 14.8a7.4 7.4 0 1111.4 0" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M8.6 12.9a4.4 4.4 0 116.8 0" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24"><path fill="#ff2d55" d="M12 20s-7-4.5-9.5-9C.7 7.4 2 4 5.2 4c1.9 0 3.4 1.1 4.1 2.6L12 9l2.7-2.4C15.4 5.1 16.9 4 18.8 4 22 4 23.3 7.4 21.5 11c-2.5 4.5-9.5 9-9.5 9z"/></symbol>
+  <symbol id="ic-wallet" viewBox="0 0 24 24">
+    <rect x="4.5" y="4" width="15" height="6" rx="2" fill="#ffcc00"/>
+    <rect x="4.5" y="6.6" width="15" height="6" rx="2" fill="#ff9500"/>
+    <rect x="4.5" y="9.2" width="15" height="6" rx="2" fill="#0a84ff"/>
+    <path d="M3.5 14a2 2 0 012-2h13a2 2 0 012 2v3.6a2.2 2.2 0 01-2.2 2.2H5.7A2.2 2.2 0 013.5 17.6z" fill="#3a3a3c"/>
+  </symbol>
+  <symbol id="ic-folder" viewBox="0 0 24 24"><path fill="#0a84ff" d="M3 7a2 2 0 012-2h4.5l1.5 2H19a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#ff3b30"/><path d="M8 12.3l2.6 2.6L16.5 9" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-icloud" viewBox="0 0 24 24">
+    <g fill="url(#g-cloud)">
+      <circle cx="9" cy="13.2" r="4"/>
+      <circle cx="14.6" cy="11.6" r="4.9"/>
+      <rect x="5.8" y="12.6" width="13" height="4.6" rx="2.3"/>
+    </g>
+  </symbol>
 </svg>
 
 <nav>
@@ -198,12 +540,12 @@
       <h1>깜빡한 구독료,<br>결제 <span>하루 전</span>에<br>알려드려요.</h1>
       <p class="sub"> 한 번만 입력하면, 매달 같은 날짜를 기억해서 하루 전에 잠금화면으로 알려드립니다. 서버도, 로그인도 없이 내 기기 안에서만 조용히 작동해요.</p>
       <div class="cta-row">
-        <a href="#install" class="btn-primary">지금 받아보기 →</a>
-        <a href="#how" class="btn-secondary">어떻게 작동하나요</a>
+        <a href="app.html" class="btn-primary">앱처럼 체험해보기 →</a>
+        <a href="#install" class="btn-secondary">설치 방법 보기</a>
       </div>
     </div>
     <div class="phone-stage">
-      <div class="phone">
+      <div class="phone" id="hero-phone">
         <div class="status-bar">
           <span>9:41</span>
           <div class="sb-right">
@@ -216,14 +558,18 @@
         <div class="phone-date">7월 9일 목요일</div>
         <div class="notif-card">
           <div class="notif-top">
-            <div class="notif-icon"><svg><use href="#ic-bell"/></svg></div>
+            <div class="notif-icon">🔔</div>
             <div class="notif-app">구독챙김</div>
             <div class="notif-time">오전 9:00</div>
           </div>
-          <div class="notif-title">ChatGpt 결제 하루 전</div>
-          <div class="notif-body">내일 결제 예정입니다</div>
+          <div class="notif-title">ChatGpt 29,000원 결제 하루 전</div>
+          <div class="notif-body">내일 결제될 예정입니다</div>
         </div>
+        <div class="launch-hint">👆 탭하면 앱이 실행돼요</div>
       </div>
+      <a class="btn-primary" id="open-big" href="app.html" target="_blank" rel="noopener" style="display:none;">지금 이 앱, 크게 보기 ↗</a>
+      <button class="demo-reset" id="demo-reset">↺ 잠금화면으로 돌아가기</button>
+      <a class="open-full" id="open-full" href="app.html" target="_blank" rel="noopener">전체 화면으로 크게 보기 ↗</a>
     </div>
   </div>
 </section>
@@ -279,6 +625,228 @@
   </div>
 </section>
 
+<section id="screens">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">미리보기 · 직접 만져보세요</div>
+      <h2>실제로 동작하는 화면이에요</h2>
+      <p class="desc">세 번째 폰에서 구독을 직접 등록해보세요. 홈 화면 뱃지가 올라가고, 알림 배너가 방금 등록한 구독으로 다시 내려옵니다.</p>
+    </div>
+    <div class="mockup-row">
+
+      <!-- Screen 1: 알림 배너 -->
+      <div class="mockup-col">
+        <div class="mockup-label"><span class="num">1</span>알림에서 바로 결정</div>
+        <div class="mockup-desc">계속 쓸지, 해지할지 알림 버튼으로 그 자리에서 끝나요 · 버튼을 눌러보세요, 폰을 클릭하면 다시 재생</div>
+        <div class="phone" id="phone-banner">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="sb-right">
+              <svg class="sb-i"><use href="#ic-signal"/></svg>
+              <svg class="sb-i"><use href="#ic-wifi"/></svg>
+              <svg class="sb-i sb-batt"><use href="#ic-battery"/></svg>
+            </div>
+          </div>
+          <div class="app-bg">
+            <div class="bg-topbar"></div>
+            <div class="bg-content">
+              <div class="bg-card"></div>
+              <div class="bg-card short"></div>
+              <div class="bg-card"></div>
+              <div class="bg-card"></div>
+            </div>
+          </div>
+          <div class="top-banner" id="live-banner">
+            <div class="banner-top">
+              <div class="banner-icon">🔔</div>
+              <span class="banner-app">구독챙김</span>
+              <span class="banner-time">지금</span>
+            </div>
+            <div class="banner-title" id="banner-title">ChatGpt 29,000원 결제 하루 전</div>
+            <div class="banner-text" id="banner-text">내일 결제될 예정입니다</div>
+            <div class="banner-actions" id="banner-actions">
+              <button type="button" id="ba-keep">계속 쓸게요</button>
+              <button type="button" id="ba-cancel" class="danger">해지 알아보기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 2: 홈 화면 뱃지 -->
+      <div class="mockup-col">
+        <div class="mockup-label"><span class="num">2</span>홈 화면 뱃지</div>
+        <div class="mockup-desc">앱 아이콘에 등록된 구독 수만큼 올라가는 뱃지 · 지금은 5개</div>
+        <div class="phone">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="sb-right">
+              <svg class="sb-i"><use href="#ic-signal"/></svg>
+              <svg class="sb-i"><use href="#ic-wifi"/></svg>
+              <svg class="sb-i sb-batt"><use href="#ic-battery"/></svg>
+            </div>
+          </div>
+          <div class="home-wallpaper"></div>
+          <div class="home-grid">
+            <div class="app-cell"><div class="app-icon bg-green"><svg><use href="#ic-phone"/></svg></div><div class="app-label">전화</div></div>
+            <div class="app-cell"><div class="app-icon bg-green2"><svg><use href="#ic-message"/></svg></div><div class="app-label">메시지</div></div>
+            <div class="app-cell"><div class="app-icon bg-white"><svg><use href="#ic-safari"/></svg></div><div class="app-label">Safari</div></div>
+            <div class="app-cell"><div class="app-icon bg-blue"><svg><use href="#ic-envelope"/></svg></div><div class="app-label">메일</div></div>
+
+            <div class="app-cell"><div class="app-icon calendar"><div class="cal-day">목요일</div><div class="cal-num">9</div></div><div class="app-label">캘린더</div></div>
+            <div class="app-cell"><div class="app-icon bg-white"><svg><use href="#ic-photos"/></svg></div><div class="app-label">사진</div></div>
+            <div class="app-cell"><div class="app-icon bg-camera"><svg><use href="#ic-camera"/></svg></div><div class="app-label">카메라</div></div>
+            <div class="app-cell"><div class="app-icon bg-dark"><svg><use href="#ic-clock"/></svg></div><div class="app-label">시계</div></div>
+
+            <div class="app-cell"><div class="app-icon bg-blue"><svg><use href="#ic-weather"/></svg></div><div class="app-label">날씨</div></div>
+            <div class="app-cell"><div class="app-icon"><svg class="full" viewBox="0 0 60 60"><use href="#ic-maps"/></svg></div><div class="app-label">지도</div></div>
+            <div class="app-cell"><div class="app-icon notes"><div class="notes-top"></div><div class="notes-lines"><i></i><i></i><i></i></div></div><div class="app-label">메모</div></div>
+            <div class="app-cell">
+              <div class="icon-wrap">
+                <div class="app-icon subscare">🔔</div>
+                <span class="badge" id="home-badge">5</span>
+              </div>
+              <div class="app-label">구독챙김</div>
+            </div>
+
+            <div class="app-cell"><div class="app-icon reminders"><div class="rem"><span class="rd" style="background:#0a84ff"></span><span class="rb"></span></div><div class="rem"><span class="rd" style="background:#ff3b30"></span><span class="rb"></span></div><div class="rem"><span class="rd" style="background:#ff9500"></span><span class="rb"></span></div></div><div class="app-label">미리 알림</div></div>
+            <div class="app-cell"><div class="app-icon bg-blue"><svg><use href="#ic-appstore"/></svg></div><div class="app-label">App Store</div></div>
+            <div class="app-cell"><div class="app-icon bg-gray"><svg><use href="#ic-gear"/></svg></div><div class="app-label">설정</div></div>
+            <div class="app-cell"><div class="app-icon bg-music"><svg><use href="#ic-music"/></svg></div><div class="app-label">음악</div></div>
+
+            <div class="app-cell"><div class="app-icon bg-podcast"><svg><use href="#ic-podcast"/></svg></div><div class="app-label">팟캐스트</div></div>
+            <div class="app-cell"><div class="app-icon bg-white"><svg><use href="#ic-heart"/></svg></div><div class="app-label">건강</div></div>
+            <div class="app-cell"><div class="app-icon bg-white"><svg><use href="#ic-wallet"/></svg></div><div class="app-label">지갑</div></div>
+            <div class="app-cell"><div class="app-icon bg-white"><svg><use href="#ic-folder"/></svg></div><div class="app-label">파일</div></div>
+          </div>
+          <div class="dock">
+            <div class="app-icon bg-green"><svg><use href="#ic-phone"/></svg></div>
+            <div class="app-icon bg-white"><svg><use href="#ic-safari"/></svg></div>
+            <div class="app-icon bg-green2"><svg><use href="#ic-message"/></svg></div>
+            <div class="app-icon bg-music"><svg><use href="#ic-music"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 3: 구독 체크리스트 -->
+      <div class="mockup-col">
+        <div class="mockup-label"><span class="num">3</span>구독 체크리스트</div>
+        <div class="mockup-desc">앱 이름·구독료·시작일을 등록하고 다음 결제일을 확인하는 화면</div>
+        <div class="phone">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="sb-right">
+              <svg class="sb-i"><use href="#ic-signal"/></svg>
+              <svg class="sb-i"><use href="#ic-wifi"/></svg>
+              <svg class="sb-i sb-batt"><use href="#ic-battery"/></svg>
+            </div>
+          </div>
+          <div class="app-screen-bg"></div>
+          <div class="phone-scroll">
+          <div class="app-screen-head">
+            <h2>내 구독 관리</h2>
+          </div>
+
+          <div class="group-label">새 구독 추가</div>
+          <div class="ios-group">
+            <div class="ios-row">
+              <span class="row-label">앱 이름</span>
+              <input type="text" id="in-name" placeholder="예: 넷플릭스">
+            </div>
+            <div class="ios-row">
+              <span class="row-label">구독료</span>
+              <input type="text" id="in-price" placeholder="예: 9,900원" inputmode="numeric">
+            </div>
+            <div class="ios-row">
+              <span class="row-label">구독 시작일</span>
+              <input type="text" id="in-date" placeholder="2026. 7. 9.">
+            </div>
+          </div>
+          <button class="add-btn" type="button" id="add-sub">추가</button>
+
+          <div class="group-label" id="sub-count">등록된 구독 · 5</div>
+          <div class="ios-group" id="sub-list">
+            <div class="sub-row total">
+              <span class="total-label">월 합계</span>
+              <span class="total-amt" id="total-amt">54,900원</span>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">가계부 앱과 다른 점</div>
+      <h2>열어야 보이는 앱이 아니라,<br>찾아오는 앱</h2>
+      <p class="desc">기능을 늘리는 대신, 돈이 나가기 직전 '결정하는 순간'을 파고듭니다. 세 가지 모두 위 데모에서 직접 눌러볼 수 있어요.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="f-emoji">👆</div>
+        <h3>알림에서 바로 결정</h3>
+        <p>잠금화면 알림의 버튼 하나로 '계속 쓸지, 해지할지'가 끝나요. 해지를 고르면 해당 서비스의 해지 페이지로 바로 연결됩니다.</p>
+        <span class="tag-live">데모에서 동작</span>
+      </div>
+      <div class="feature-card">
+        <div class="f-emoji">📈</div>
+        <h3>가격 인상 감지</h3>
+        <p>결제 다음날 "금액이 맞았나요?" 확인 한 번으로 조용한 가격 인상을 잡아내요. 서버 없이, 내 확인만으로요.</p>
+        <span class="tag-live">데모에서 동작</span>
+      </div>
+      <div class="feature-card">
+        <div class="f-emoji">⏳</div>
+        <h3>무료체험 파수꾼</h3>
+        <p>무료체험 종료 전날 잠금화면으로 알려드려요. 지금 해지해도 종료일까지 쓸 수 있다는 것까지 함께요.</p>
+        <span class="tag-live">데모에서 동작</span>
+      </div>
+      <div class="feature-card">
+        <div class="f-emoji">⏱️</div>
+        <h3>구독 ROI 분석</h3>
+        <p>iOS 스크린타임과 연동해 "이번 달 1시간 보고 9,900원"처럼 시간당 비용을 계산해요. 잘 안 쓰는 구독은 갱신 전에 물어봐요 — 웹 서비스는 흉내낼 수 없는 기능이에요.</p>
+        <span class="tag-live">데모에서 동작</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">가격</div>
+      <h2>구독을 줄여주는 앱이라서,<br>구독료를 받지 않아요</h2>
+      <p class="desc">서버가 없으니 매달 나가는 비용도 없어요. 그래서 한 번 결제로 끝낼 수 있습니다.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="p-name">무료</div>
+        <div class="p-amt">0원</div>
+        <div class="p-once">그냥 계속 무료</div>
+        <ul>
+          <li>구독 5개까지 등록</li>
+          <li>결제·무료체험 알림 무제한</li>
+          <li>가격 인상 감지 포함</li>
+          <li>온디바이스 저장 · 로그인 없음</li>
+        </ul>
+      </div>
+      <div class="price-card featured">
+        <div class="p-name">평생 소장</div>
+        <div class="p-amt">₩6,900</div>
+        <div class="p-once">한 번만 · 매달 아님</div>
+        <ul>
+          <li>구독 무제한 등록</li>
+          <li>잠금화면 위젯 (예정)</li>
+          <li>이후 모든 업데이트 평생 포함</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="install">
   <div class="wrap">
     <div class="section-head">
@@ -311,6 +879,183 @@
     <p>개인용 MVP · React Native + Expo로 제작</p>
   </div>
 </footer>
+
+<script>
+(function(){
+  var list = document.getElementById('sub-list');
+  var badge = document.getElementById('home-badge');
+  var countLabel = document.getElementById('sub-count');
+  var totalEl = document.getElementById('total-amt');
+  var banner = document.getElementById('live-banner');
+  var bannerTitle = document.getElementById('banner-title');
+  var inName = document.getElementById('in-name');
+  var inPrice = document.getElementById('in-price');
+  var inDate = document.getElementById('in-date');
+  var addBtn = document.getElementById('add-sub');
+
+  var fmt = function(n){ return n.toLocaleString('ko-KR') + '원'; };
+
+  // 히어로 데모(app.html)와 동일한 샘플 데이터 — '어제 결제된' 유튜브와 '체험 D-3' 디즈니+ 포함
+  var seedNow = new Date();
+  var seedYstDay = new Date(seedNow.getFullYear(), seedNow.getMonth(), seedNow.getDate() - 1).getDate();
+  var subs = [
+    { name:'ChatGpt',        price:29000, day:15, iconHTML:'<div class="sub-icon"><img src="icons/chatgpt.png" alt="ChatGPT"></div>' },
+    { name:'밀리의 서재',     price:9900,  day:3,  iconHTML:'<div class="sub-icon"><img src="icons/millie.png" alt="밀리의 서재"></div>' },
+    { name:'아이폰 클라우드',  price:1100,  day:21, iconHTML:'<div class="sub-icon icloud"><svg><use href="#ic-icloud"/></svg></div>' },
+    { name:'유튜브 프리미엄',  price:14900, day:seedYstDay, iconHTML:'<div class="sub-icon"><img src="icons/youtube.png" alt="유튜브 프리미엄"></div>' },
+    { name:'디즈니+',         price:9900,  day:0, trialD:3, iconHTML:'<div class="sub-icon"><img src="icons/disney.png" alt="디즈니+"></div>' }
+  ];
+
+  function render(){
+    list.querySelectorAll('.sub-row:not(.total)').forEach(function(r){ r.remove(); });
+    var totalRow = list.querySelector('.sub-row.total');
+    var total = 0;
+    subs.forEach(function(s, i){
+      if(!s.trialD) total += s.price; // 무료체험은 아직 안 나가는 돈
+      var priceLine = s.trialD ? '체험 후 월 ' + fmt(s.price) : '월 ' + fmt(s.price);
+      var nextLine = s.trialD
+        ? 'D-' + s.trialD + '<span class="d-label">체험</span>'
+        : s.day + '일<span class="d-label">매월</span>';
+      var row = document.createElement('div');
+      row.className = 'sub-row';
+      row.innerHTML =
+        '<div class="sub-row-left">' +
+          '<div class="check-dot"><svg><use href="#ic-check"/></svg></div>' +
+          s.iconHTML +
+          '<div class="sub-name-wrap">' +
+            '<div class="sub-name"></div>' +
+            '<div class="sub-price">' + priceLine + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:8px;">' +
+          '<div class="sub-next">' + nextLine + '</div>' +
+          '<button class="sub-del" type="button" aria-label="삭제">✕</button>' +
+        '</div>';
+      row.querySelector('.sub-name').textContent = s.name;
+      row.querySelector('.sub-del').addEventListener('click', function(){
+        subs.splice(i, 1);
+        render();
+      });
+      list.insertBefore(row, totalRow);
+    });
+    totalEl.textContent = fmt(total);
+    badge.textContent = subs.length;
+    countLabel.textContent = '등록된 구독 · ' + subs.length;
+  }
+
+  var bannerText = document.getElementById('banner-text');
+  var bannerActions = document.getElementById('banner-actions');
+  var bannerRealTitle = bannerTitle.textContent;
+  function replayBanner(){
+    bannerTitle.textContent = bannerRealTitle;
+    bannerText.textContent = '내일 결제될 예정입니다';
+    bannerActions.style.visibility = 'visible';
+    banner.style.animation = 'none';
+    void banner.offsetWidth;
+    banner.style.animation = '';
+  }
+  function bannerChoice(title, text){
+    bannerTitle.textContent = title;
+    bannerText.textContent = text;
+    bannerActions.style.visibility = 'hidden';
+  }
+  document.getElementById('ba-keep').addEventListener('click', function(e){
+    e.stopPropagation();
+    bannerChoice('좋아요, 계속 챙겨드릴게요 👍', '다음 결제 전에 또 알려드려요');
+  });
+  document.getElementById('ba-cancel').addEventListener('click', function(e){
+    e.stopPropagation();
+    bannerChoice('해지 페이지를 열었어요 🔗', 'ChatGPT 구독 관리 화면이 새 탭에서 열려요');
+    window.open('https://chatgpt.com/#settings', '_blank', 'noopener');
+  });
+
+  function addSub(){
+    var name = inName.value.trim();
+    var price = parseInt(inPrice.value.replace(/[^0-9]/g,''), 10);
+    if(!name || !price){
+      addBtn.textContent = '이름과 구독료를 입력해주세요';
+      setTimeout(function(){ addBtn.textContent = '추가'; }, 1400);
+      return;
+    }
+    var nums = inDate.value.match(/\d+/g);
+    var day = nums ? parseInt(nums[nums.length-1], 10) : new Date().getDate();
+    if(!(day >= 1 && day <= 31)) day = new Date().getDate();
+
+    subs.push({
+      name: name,
+      price: price,
+      day: day,
+      iconHTML: '<div class="sub-icon custom">' + name.charAt(0).toUpperCase() + '</div>'
+    });
+    render();
+
+    var sc = document.querySelector('.phone-scroll');
+    sc.scrollTo({ top: sc.scrollHeight, behavior: 'smooth' });
+
+    bannerRealTitle = name + ' ' + fmt(price) + ' 결제 하루 전';
+    replayBanner();
+
+    inName.value = ''; inPrice.value = ''; inDate.value = '';
+    inName.focus();
+  }
+
+  addBtn.addEventListener('click', addSub);
+  [inName, inPrice, inDate].forEach(function(el){
+    el.addEventListener('keydown', function(e){ if(e.key === 'Enter') addSub(); });
+  });
+  document.getElementById('phone-banner').addEventListener('click', replayBanner);
+
+  render();
+
+  /* ----- 히어로 폰: 탭하면 앱 실행 ----- */
+  var heroPhone = document.getElementById('hero-phone');
+  var demoReset = document.getElementById('demo-reset');
+  var openBig = document.getElementById('open-big');
+  var openFull = document.getElementById('open-full');
+  var appFrame = null;
+
+  function launchApp(){
+    if(heroPhone.classList.contains('launched')) return;
+    if(!appFrame){
+      appFrame = document.createElement('iframe');
+      appFrame.className = 'app-frame';
+      appFrame.src = 'app.html';
+      appFrame.setAttribute('title', '구독챙김 앱 데모');
+      heroPhone.appendChild(appFrame);
+    }
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ heroPhone.classList.add('launched'); });
+    });
+    openBig.style.display = 'inline-flex';
+    demoReset.style.display = 'inline-block';
+    openFull.style.display = 'none';
+  }
+
+  heroPhone.addEventListener('click', launchApp);
+
+  demoReset.addEventListener('click', function(){
+    heroPhone.classList.remove('launched');
+    openBig.style.display = 'none';
+    demoReset.style.display = 'none';
+    openFull.style.display = 'inline';
+    setTimeout(function(){
+      if(appFrame){ appFrame.remove(); appFrame = null; }
+    }, 400);
+  });
+
+  // 데스크톱에서는 히어로 CTA도 새 탭 대신 폰 안에서 앱을 실행
+  var heroCta = document.querySelector('.btn-primary');
+  if(heroCta){
+    heroCta.addEventListener('click', function(e){
+      if(window.matchMedia('(min-width: 861px)').matches){
+        e.preventDefault();
+        launchApp();
+        heroPhone.scrollIntoView({ behavior:'smooth', block:'center' });
+      }
+    });
+  }
+})();
+</script>
 
 </body>
 </html>
