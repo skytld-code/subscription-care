@@ -18,6 +18,7 @@
     --border:#38383a;
     --font-display:'Space Grotesk', -apple-system, sans-serif;
     --font-body:'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-ios:-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   }
   *{ box-sizing:border-box; margin:0; padding:0; }
   html{ scroll-behavior:smooth; }
@@ -85,33 +86,45 @@
     width:280px; height:568px; background:#000; border-radius:44px;
     border:2px solid #2c2c2e; position:relative; overflow:hidden;
     box-shadow:0 40px 80px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.04) inset;
+    font-family:var(--font-ios);
   }
   .phone::before{
     content:''; position:absolute; top:12px; left:50%; transform:translateX(-50%);
     width:90px; height:26px; background:#000; border-radius:20px; z-index:5;
   }
+  .status-bar{
+    position:absolute; top:17px; left:0; right:0; z-index:6;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 22px; color:#fff; font-size:14px; font-weight:700;
+  }
+  .sb-right{ display:flex; align-items:center; gap:5px; }
+  .sb-i{ width:17px; height:11px; color:#fff; }
+  .sb-i.sb-batt{ width:24px; height:11px; }
   .phone-time{
-    text-align:center; color:#fff; font-family:var(--font-display); font-weight:700;
-    font-size:56px; margin-top:56px; letter-spacing:-0.02em;
+    text-align:center; color:#fff;
+    font-family:var(--font-ios);
+    font-weight:600; font-size:58px; line-height:1.18; padding-top:2px; margin-top:52px; letter-spacing:-0.03em;
   }
   .phone-date{ text-align:center; color:rgba(255,255,255,0.85); font-size:14px; font-weight:600; margin-top:6px; }
   .notif-card{
-    margin:210px 14px 0; background:rgba(30,30,32,0.85); backdrop-filter:blur(10px);
-    border-radius:16px; padding:12px 14px;
+    margin:206px 10px 0; background:rgba(30,30,32,0.92); backdrop-filter:blur(20px) saturate(1.8);
+    border-radius:20px; padding:12px 14px;
     border:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 12px 28px rgba(0,0,0,0.4);
     opacity:0; transform:translateY(-14px);
     animation:dropIn .6s cubic-bezier(.2,.8,.2,1) 0.9s forwards;
   }
   @keyframes dropIn{ to{ opacity:1; transform:translateY(0); } }
   .notif-top{ display:flex; align-items:center; gap:6px; margin-bottom:6px; }
   .notif-icon{
-    width:16px; height:16px; border-radius:5px; background:var(--accent);
-    display:flex; align-items:center; justify-content:center; font-size:10px;
+    width:18px; height:18px; border-radius:5.5px; background:linear-gradient(160deg,#3aa0ff,#0a84ff);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
   }
-  .notif-app{ color:var(--text-secondary); font-size:12px; font-weight:600; flex:1; }
-  .notif-time{ color:var(--text-secondary); font-size:11px; }
-  .notif-title{ color:#fff; font-size:14px; font-weight:700; margin-bottom:2px; }
-  .notif-body{ color:rgba(255,255,255,0.75); font-size:13px; }
+  .notif-icon svg{ width:11px; height:11px; color:#fff; }
+  .notif-app{ color:rgba(255,255,255,0.55); font-size:13px; font-weight:600; flex:1; }
+  .notif-time{ color:rgba(255,255,255,0.4); font-size:12px; }
+  .notif-title{ color:#fff; font-size:15px; font-weight:600; margin-bottom:1px; letter-spacing:-0.01em; }
+  .notif-body{ color:rgba(255,255,255,0.75); font-size:14px; }
 
   /* Section shared */
   section{ padding:80px 0; border-top:1px solid var(--border); }
@@ -164,6 +177,13 @@
 </head>
 <body>
 
+<svg style="display:none">
+  <symbol id="ic-signal" viewBox="0 0 18 12"><rect x="0" y="7" width="3" height="5" rx="0.8" fill="currentColor"/><rect x="4.5" y="5" width="3" height="7" rx="0.8" fill="currentColor"/><rect x="9" y="3" width="3" height="9" rx="0.8" fill="currentColor"/><rect x="13.5" y="0" width="3" height="12" rx="0.8" fill="currentColor"/></symbol>
+  <symbol id="ic-wifi" viewBox="0 0 16 12"><path d="M8 10.6a1.1 1.1 0 100-2.2 1.1 1.1 0 000 2.2z" fill="currentColor"/><path d="M5.1 7.3a4.2 4.2 0 015.8 0" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M2.4 4.6a8 8 0 0111.2 0" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="ic-battery" viewBox="0 0 25 12"><rect x="0.75" y="0.75" width="20.5" height="10.5" rx="2.8" stroke="currentColor" stroke-opacity="0.5" stroke-width="1" fill="none"/><rect x="2.4" y="2.4" width="17.2" height="7.2" rx="1.6" fill="currentColor"/><rect x="22.3" y="4" width="1.6" height="4" rx="0.8" fill="currentColor" opacity="0.5"/></symbol>
+  <symbol id="ic-bell" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a1.5 1.5 0 011.5 1.5v.6c3 .7 5 3.3 5 6.6v3.6l1.7 2.4c.4.6 0 1.3-.7 1.3H4.5c-.7 0-1.1-.7-.7-1.3L5.5 14.3v-3.6c0-3.3 2-5.9 5-6.6v-.6A1.5 1.5 0 0112 2z"/><path fill="currentColor" d="M9.5 19a2.5 2.5 0 005 0h-5z"/></symbol>
+</svg>
+
 <nav>
   <div class="wrap">
     <div class="logo"><span class="logo-mark">🔔</span>구독챙김</div>
@@ -176,7 +196,7 @@
     <div>
       <div class="eyebrow"><span class="dot"></span>iOS 전용 · 개인용 MVP</div>
       <h1>깜빡한 구독료,<br>결제 <span>하루 전</span>에<br>알려드려요.</h1>
-      <p class="sub">결제일을 한 번만 입력하면, 매달 같은 날짜를 기억해서 하루 전에 잠금화면으로 알려드립니다. 서버도, 로그인도 없이 내 기기 안에서만 조용히 작동해요.</p>
+      <p class="sub"> 한 번만 입력하면, 매달 같은 날짜를 기억해서 하루 전에 잠금화면으로 알려드립니다. 서버도, 로그인도 없이 내 기기 안에서만 조용히 작동해요.</p>
       <div class="cta-row">
         <a href="#install" class="btn-primary">지금 받아보기 →</a>
         <a href="#how" class="btn-secondary">어떻게 작동하나요</a>
@@ -184,11 +204,19 @@
     </div>
     <div class="phone-stage">
       <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="sb-right">
+            <svg class="sb-i"><use href="#ic-signal"/></svg>
+            <svg class="sb-i"><use href="#ic-wifi"/></svg>
+            <svg class="sb-i sb-batt"><use href="#ic-battery"/></svg>
+          </div>
+        </div>
         <div class="phone-time">9:41</div>
         <div class="phone-date">7월 9일 목요일</div>
         <div class="notif-card">
           <div class="notif-top">
-            <div class="notif-icon">🔔</div>
+            <div class="notif-icon"><svg><use href="#ic-bell"/></svg></div>
             <div class="notif-app">구독챙김</div>
             <div class="notif-time">오전 9:00</div>
           </div>
