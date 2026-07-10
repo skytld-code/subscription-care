@@ -245,7 +245,7 @@
     font-family:var(--font-display); font-size:12px;
   }
   .mockup-desc{ color:var(--text-secondary); font-size:12.5px; text-align:center; margin-top:-10px; max-width:260px; }
-  .mockup-row .phone{ flex-shrink:0; font-family:var(--font-ios); }
+  .mockup-row .phone{ flex-shrink:0; font-family:var(--font-ios); margin-top:auto; }
 
   /* Screen 1: top banner notification */
   .app-bg{ position:absolute; inset:0; filter:blur(7px); transform:scale(1.08); background:#000; }
@@ -424,15 +424,16 @@
 
   /* 차별화 기능 카드 */
   .feature-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
-  .feature-card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px; }
+  .feature-card{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px; display:flex; flex-direction:column; align-items:flex-start; }
   .feature-card .f-emoji{ font-size:26px; margin-bottom:14px; }
   .feature-card h3{ font-size:17px; font-weight:700; margin-bottom:8px; }
   .feature-card p{ color:var(--text-secondary); font-size:14px; line-height:1.6; }
   .tag-live{
     display:inline-block; font-size:11px; font-weight:700; color:var(--accent-green);
     background:rgba(48,209,88,0.12); border:1px solid rgba(48,209,88,0.3);
-    padding:3px 9px; border-radius:100px; margin-top:14px;
+    padding:3px 9px; border-radius:100px; margin-top:auto;
   }
+  .feature-card p{ margin-bottom:14px; }
 
   /* 가격 */
   .price-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:760px; }
@@ -588,6 +589,7 @@
     <div class="nav-links">
       <a href="#problem">문제</a>
       <a href="#roadmap">기능</a>
+      <a href="#how">작동 방식</a>
       <a href="#screens">미리보기</a>
       <a href="#pricing">가격</a>
     </div>
@@ -600,7 +602,7 @@
     <div>
       <div class="eyebrow"><span class="dot"></span>iOS 전용 · 개인용 MVP</div>
       <h1>깜빡한 구독료,<br>결제 전에 <span>미리</span><br>알려드려요.</h1>
-      <p class="sub">한 번만 입력하면 결제일을 기억했다가, 원하는 시점(기본 하루 전)에 잠금화면으로 알려드립니다.<br>서버도, 로그인도 없이 내 기기 안에서만 조용히 작동해요.</p>
+      <p class="sub">한 번만 입력하면 결제일을 기억했다가,<br>원하는 시점(기본 하루 전)에 잠금화면으로 알려드립니다.<br>서버도, 로그인도 없이 내 기기 안에서만 조용히 작동해요.</p>
       <div class="cta-row">
         <a href="app.html" class="btn-primary">앱처럼 체험해보기 →</a>
         <a href="#install" class="btn-secondary">설치 방법 보기</a>
@@ -638,7 +640,7 @@
 
 <section id="problem">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" style="max-width:none;">
       <div class="section-label">01 · 이런 적 있으신가요</div>
       <h2>매달 조용히 빠져나가는 구독료</h2>
       <p class="desc">한 번 등록해두면 잊어버리기 쉬운 구독 서비스들, 결제일이 지나서야 알아차리는 경우가 많아요.</p>
@@ -712,7 +714,7 @@
       <div class="feature-card">
         <div class="f-emoji">⏱️</div>
         <h3>구독 ROI 분석</h3>
-        <p>iOS 스크린타임과 연동해 시간당 구독 비용을 계산해요.<br>"이번 달 1시간 보고 9,900원" — 잘 안 쓰는 구독은 갱신 전에 물어봐요.<br>웹 서비스는 흉내낼 수 없는 기능이에요.</p>
+        <p>iOS 스크린타임과 연동해 시간당 구독 비용을 계산해요.<br>"이번 달 1시간 보고 9,900원" — 잘 안 쓰는 구독은 갱신 전에 물어봐요.</p>
         <span class="tag-live">데모에서 동작</span>
       </div>
     </div>
@@ -756,7 +758,7 @@
 
 <section id="screens">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" style="max-width:none;">
       <div class="section-label">04 · 미리보기 · 직접 만져보세요</div>
       <h2>실제로 동작하는 화면이에요</h2>
       <p class="desc">첫 번째 폰은 '크게 보기'와 완전히 같은 실제 앱이에요.<br>추가 탭에서 구독을 등록하면 가운데 폰의 뱃지가 올라가고, 마지막 폰에 알림 배너가 내려옵니다.</p>
@@ -766,7 +768,7 @@
       <!-- 시연 3단계: 알림에서 바로 결정 -->
       <div class="mockup-col" style="order:3;">
         <div class="mockup-label"><span class="num">3</span>알림에서 바로 결정</div>
-        <div class="mockup-desc">결제 전날 오는 알림이에요. 알림 속 두 버튼을 직접 눌러보세요 — 폰의 빈 곳을 클릭하면 알림이 다시 내려옵니다</div>
+        <div class="mockup-desc">결제 전날 오는 알림이에요.<br>알림 속 두 버튼을 직접 눌러보세요.<br>폰의 빈 곳을 클릭하면 알림이 다시 내려옵니다.</div>
         <div class="phone" id="phone-banner">
           <div class="status-bar">
             <span>9:41</span>
@@ -804,7 +806,7 @@
       <!-- 시연 2단계: 홈 화면 뱃지 -->
       <div class="mockup-col" style="order:2;">
         <div class="mockup-label"><span class="num">2</span>홈 화면 뱃지</div>
-        <div class="mockup-desc">앱 아이콘 뱃지가 등록된 구독 수를 보여줘요 — 첫 번째 폰에서 등록하면 숫자가 실시간으로 올라갑니다</div>
+        <div class="mockup-desc">앱 아이콘 뱃지가 등록된 구독 수를 보여줘요.</div>
         <div class="phone">
           <div class="status-bar">
             <span>9:41</span>
@@ -859,7 +861,7 @@
       <!-- 시연 1단계: 실제 앱 (라이브) -->
       <div class="mockup-col" style="order:1;">
         <div class="mockup-label"><span class="num">1</span>실제 앱 그대로</div>
-        <div class="mockup-desc">'크게 보기'와 완전히 같은 앱이에요 — 추가 탭에서 직접 등록해보세요</div>
+        <div class="mockup-desc">'크게 보기'와 완전히 같은 앱이에요.<br>추가 탭에서 직접 등록해보세요.</div>
         <div class="phone">
           <iframe class="phone-app" src="app.html" title="구독챙김 앱 라이브 데모"></iframe>
         </div>
@@ -880,7 +882,7 @@
       <div class="price-card">
         <div class="p-name">무료</div>
         <div class="p-amt">0원</div>
-        <div class="p-once">그냥 계속 무료</div>
+        <div class="p-once">계속 무료</div>
         <ul>
           <li>구독 5개까지 등록</li>
           <li>결제·무료체험 알림 무제한</li>
@@ -894,7 +896,6 @@
         <div class="p-once">한 번만 · 매달 아님</div>
         <ul>
           <li>구독 무제한 등록</li>
-          <li>잠금화면 위젯 (예정)</li>
           <li>이후 모든 업데이트 평생 포함</li>
         </ul>
       </div>
@@ -914,13 +915,13 @@
         <div class="install-option">
           <span class="tag">가장 간단함</span>
           <h3>개인 기기 직접 설치</h3>
-          <p>Xcode로 내 아이폰에 바로 설치하는 방식이에요.<br>무료지만 7일마다 재설치가 필요해요.</p>
+          <p>Xcode로 내 아이폰에 바로 설치하는 방식이에요.<br>무료지만 7일마다 재설치가 필요해요.(애플 정책)</p>
           <a href="#" class="link-btn">설치 가이드 보기 →</a>
         </div>
         <div class="install-option">
           <span class="tag">더 편함</span>
           <h3>TestFlight</h3>
-          <p>Apple Developer 계정이 있으면 최대 90일간 재설치 없이 사용할 수 있어요.</p>
+          <p>Apple Developer 계정이 있으면 최대 90일간 재설치 없이 사용할 수 있어요.(애플 정책)</p>
           <a href="#" class="link-btn">TestFlight 초대 받기 →</a>
         </div>
       </div>
